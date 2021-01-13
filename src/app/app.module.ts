@@ -21,7 +21,7 @@ const ROUTES: Routes = [
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'register/successful', component: RegisterSuccessfulComponent },
-  { path: 'main', component: MainComponent },
+  { path: 'main', component: MainComponent, canActivate: [ AuthService ] },
   { path: 'note', component: ItemComponent },
   { path: 'note/:id', component: ItemComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' }

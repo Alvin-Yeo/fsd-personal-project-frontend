@@ -1,3 +1,14 @@
 .fas {
     font-size: 0.8rem;
 }
+
+.preview {
+    max-width: 125px;
+    height: auto;
+    border-radius: 0.25rem;
+    margin-left: 3px;
+}
+
+.div-note {
+    cursor: pointer;
+}

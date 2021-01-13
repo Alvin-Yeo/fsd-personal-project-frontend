@@ -1,7 +1,7 @@
 <main>
     <div class="container">
         <div class="inner-container">
-            <div class="row mt-3">
+            <div class="row mt-3" *ngIf="!editMode">
                 <div class="col">
                     <div class="float-end">
                         <i class="fas fa-pen tool-pen"></i>  
@@ -10,10 +10,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3" *ngIf="editMode">
                 <div class="col">
                     <div class="d-flex justify-content-between">
-                        <i class="fas fa-check tool-done"></i>  
+                        <i class="fas fa-check tool-done" (click)="onSubmitBtn()"></i>  
                         <i class="fas fa-times tool-cancel"></i>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                                         </div>
                                         <small>{{ selectedDate | date:'yyyy' }}, {{ selectedDate | date:'EEEE' }}</small>
                                     </div>
-                                    <div (click)="picker.open()">
+                                    <div (click)="picker.open()" *ngIf="editMode">
                                         <input type="text" class="visually-hidden" [matDatepicker]="picker" formControlName="date">
                                         <mat-datepicker #picker></mat-datepicker>
                                         <i class="far fa-calendar-alt app-button"></i>
@@ -46,7 +46,7 @@
                                     <div style="width:75px">
                                         <span class="fw-bold app-date text-lowercase">{{ selectedDate | date:'shortTime' }}</span>
                                     </div>
-                                    <div>
+                                    <div *ngIf="editMode">
                                         <input class="visually-hidden" [ngxTimepicker]="toggleIcon" formControlName="time">
                                         <ngx-material-timepicker-toggle [for]="toggleIcon">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30px" height="30px" ngxMaterialTimepickerToggleIcon>
@@ -59,24 +59,30 @@
                             </div>
                             <!-- card body -->
                             <div class="card-body">
+                                <!-- textarea -->
                                 <div class="mb-3">
-                                    <textarea class="form-control" formControlName="content" style="height: 400px"></textarea>
+                                    <textarea class="form-control" formControlName="content" style="height: 300px" [readonly]="!editMode"></textarea>
                                 </div>
-                                <div class="container">
+                                <!-- image preview -->
+                                <div class="container preview">
                                     <div class="row">
-                                        <div class="col">1</div>
-                                        <div class="col">2</div>
-                                        <div class="col">3</div>
+                                        <div class="col" *ngIf="photoPreviewArr[0]">
+                                            <img [src]="photoPreviewArr[0]" alt="">
+                                        </div>
+                                        <div class="col" *ngIf="photoPreviewArr[0]">
+                                            <img [src]="photoPreviewArr[1]" alt="">
+                                        </div>
+                                        <div class="col" *ngIf="photoPreviewArr[0]">
+                                            <img [src]="photoPreviewArr[2]" alt="">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="float-end">
+                                <!-- camera button -->
+                                <div class="float-end" *ngIf="editMode">
                                     <label for="photo"><i class="fas fa-camera tool-camera"></i></label>
-                                    <input type="file" id="photo" class="visually-hidden" accept="image/png, image/jpeg" formControlName="photo">
+                                    <input type="file" id="photo" class="visually-hidden" accept="image/png, image/jpeg" formControlName="photo" #fileInput>
                                 </div>                                
                             </div>
-                            <div>{{noteForm.get('date').value}}</div>
-                            <div>{{noteForm.get('time').value}}</div>
-                            <div>{{noteForm.get('content').value}}</div>
                         </div>
                     </form>
                 </div>
