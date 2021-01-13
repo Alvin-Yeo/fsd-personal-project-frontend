@@ -1,0 +1,32 @@
+<main>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col">
+                <div class="inner-container">
+                    <p class="text-center fs-4">Welcome to Simple-Notes!</p>
+                    <p class="text-danger text-center fs-6">Please login to continue.</p>
+                    <form [formGroup]="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" maxlength="64" formControlName="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" autocomplete="on" maxlength="45" formControlName="password">
+                        </div>
+                        <div class="mb-3" *ngIf="hasError">
+                            <small class="text-danger"><em>* Incorrect email address or password. Please try again.</em></small>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="button" [disabled]="!loginForm.valid" (click)="onLoginBtn()">Login</button>
+                        </div>
+                        <div class="mt-3 mb-3 text-center">
+                            <small>New user? <a [routerLink]="['/register']">Sign up a new account</a></small> <br>
+                            <small>Forgot password? <a href="#">Reset password</a></small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

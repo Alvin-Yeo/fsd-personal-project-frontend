@@ -1,0 +1,21 @@
+<main>
+    <div class="container">
+        <div class="inner-container">
+            <div class="row mt-3">
+                <div class="col">
+                    <button class="float-end btn btn-primary"><i class="fas fa-plus"></i> New Note</button>
+                </div>
+            </div>
+            <div class="row mt-3" *ngIf="quote.msg">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body text-center fst-italic">
+                            <p class="lead">"{{ quote.msg }}"</p>
+                            <small class="lead">- {{ quote.author }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

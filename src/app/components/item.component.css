@@ -1,0 +1,38 @@
+.far {
+    font-size: 1.5rem;
+    padding-top: 2px;
+}
+
+svg {
+    fill: var(--bs-primary) ;
+}
+
+.tool-done,
+.tool-cancel,
+.tool-camera,
+.tool-pen, 
+.tool-trash {
+    font-size: 1.25em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tool-done,
+.tool-cancel,
+.tool-camera {
+    font-size: 1.75rem;
+}
+
+.tool-done {
+    color: var(--bs-success);
+}
+
+.tool-cancel {
+    color: var(--bs-danger);
+}
+
+.tool-camera:hover,
+.tool-pen:hover, 
+.tool-trash:hover {
+    color: var(--bs-primary);
+}
