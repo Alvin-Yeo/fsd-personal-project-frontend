@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Note } from '../models';
 import { NotesService } from '../notes.service';
 
 @Component({
@@ -12,12 +13,17 @@ import { NotesService } from '../notes.service';
 })
 export class ItemComponent implements OnInit {
 
+  user = '';
   noteForm: FormGroup
   editMode = false;
-  user = '';
+  
+  retrievedNote: Note;
+
   selectedDate: Date;
   photoArr = [];
   photoPreviewArr = [];
+
+  s3Endpoint = '';
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -32,19 +38,28 @@ export class ItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authSrvc.getUser();
-    console.info(`[INFO] User: `, this.user);
+
+    this.s3Endpoint = this.noteSrvc.getS3Endpoint();
 
     const id = this.activatedRoute.snapshot.params.id;
 
-    if(!id) {
-      this.editMode = true;
-      this.selectedDate = new Date();
-    }
-      
     // initialize form
     this.noteForm = this.createNoteForm();
     this.onValueChanges();
 
+    if(id) {
+      this.noteSrvc.getSingleNote(id)
+        .then(result => {
+          this.retrievedNote = result;
+          this.selectedDate = this.retrievedNote.date;
+          this.noteForm.patchValue({ content: this.retrievedNote.content });
+          this.photoPreviewArr.push(this.s3Endpoint + this.retrievedNote.photo);
+        })
+        .catch(error => console.error(error));
+    } else {
+      this.editMode = true;
+      this.selectedDate = new Date();
+    }
   }
 
   createNoteForm(): FormGroup {
@@ -112,5 +127,9 @@ export class ItemComponent implements OnInit {
         this.router.navigate(['/main']);
       })
       .catch((error) => console.error(error));
+  }
+
+  onBackBtn() {
+    this.router.navigate(['/main']);
   }
 }

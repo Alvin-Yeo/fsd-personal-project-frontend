@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { Note } from '../models';
 import { NotesService } from '../notes.service';
@@ -12,21 +13,21 @@ export class MainComponent implements OnInit {
 
   quote = { msg: '', author: '' };
   notes: Note[] = [];
+  photos = [];
   user = '';
   s3Endpoint = '';
+  noteMode = true;
 
   constructor(
     private authSrvc: AuthService,
-    private noteSrvc: NotesService
+    private noteSrvc: NotesService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.user = this.authSrvc.getUser();
-    console.info(`[INFO] User: `, this.user);
 
-    this.noteSrvc.getS3Endpoint()
-      .then(result => this.s3Endpoint = result)
-      .catch(error => console.error(error));
+    this.s3Endpoint = this.noteSrvc.getS3Endpoint();
 
     this.noteSrvc.getRandomQuote()
       .then(result => this.quote = result)
@@ -38,6 +39,21 @@ export class MainComponent implements OnInit {
   }
 
   onNoteItem(id: string) {
-    console.log('ID: ', id);
+    this.router.navigate(['/note/', id]);
+  }
+
+  filterList(type, order) {
+    if(type === 'notes') {
+      this.noteSrvc.getNoteList(this.user, order)
+        .then(result => this.notes = result)
+        .catch(error => console.error(error));
+    }
+
+    if(type === 'photo') {
+      this.noteMode = false;
+      this.noteSrvc.getPhotoList(this.user, order)
+        .then(result => this.photos = (result) ? result['photos'] : [])
+        .catch(error => console.error(error));
+    }
   }
 }

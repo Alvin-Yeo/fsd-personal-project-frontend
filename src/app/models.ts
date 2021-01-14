@@ -3,5 +3,5 @@ export interface Note {
     date: Date;
     id?: string;
     content?: string;
-    photoKey: string;
+    photo: string;
 }

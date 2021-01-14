@@ -3,9 +3,23 @@
         <div class="inner-container">
             <div class="row mt-3">
                 <div class="col">
-                    <a class="float-end btn btn-primary" [routerLink]="['/note']"><i class="fas fa-plus"></i> New Note</a>
+                    <div class="d-flex justify-content-between">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="filterBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-list-ul"></i> &nbsp;
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="filterBtn">
+                                <li><a class="dropdown-item" (click)="filterList('notes', 'desc')">Note List (Newest)</a></li>
+                                <li><a class="dropdown-item" (click)="filterList('notes', 'asc')">Note List (Oldest)</a></li>
+                                <li><a class="dropdown-item" (click)="filterList('photo', 'desc')">Photo List (Newest)</a></li>
+                                <li><a class="dropdown-item" (click)="filterList('photo', 'asc')">Photo List (Oldest)</a></li>
+                            </ul>
+                        </div>
+                        <a class="btn btn-primary" [routerLink]="['/note']"><i class="fas fa-plus"></i> New Note</a>
+                    </div>
                 </div>
             </div>
+            <div *ngIf="noteMode">
             <div class="row mt-3 div-note" *ngFor="let note of notes" (click)="onNoteItem(note['_id'])">
                 <div class="col">
                     <div class="d-flex">
@@ -21,7 +35,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p class="card-text">{{ note.content }}</p>
+                                <p class="card-text">{{ (note.content.length >= 150 ) ? note.content.slice(0, 120).concat('...') : note.content }}</p>
                             </div>
                         </div>
                         <div>
@@ -30,7 +44,17 @@
                     </div>      
                 </div>
             </div>
-            <div class="row mt-3" *ngIf="quote.msg">
+            </div>
+            <div *ngIf="!noteMode">
+            <div class="container div-note">
+                <div class="row mt-3">
+                    <div class="col photo-grid-div" *ngFor="let photo of photos">
+                        <img src="{{ s3Endpoint + photo }}" class="photo-grid" alt="">
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row mt-3 mb-5" *ngIf="quote.msg">
                 <div class="col">
                     <div class="card">
                         <div class="card-header text-center fst-italic">

@@ -1,8 +1,10 @@
 <main>
     <div class="container">
         <div class="inner-container">
+            <!-- in view mode -->
             <div class="row mt-3" *ngIf="!editMode">
                 <div class="col">
+                    <i class="fas fa-arrow-left tool-cancel" (click)="onBackBtn()"></i>
                     <div class="float-end">
                         <i class="fas fa-pen tool-pen"></i>  
                         &nbsp;&nbsp;&nbsp;
@@ -10,11 +12,12 @@
                     </div>
                 </div>
             </div>
+            <!-- in edit mode -->
             <div class="row mt-3" *ngIf="editMode">
                 <div class="col">
                     <div class="d-flex justify-content-between">
+                        <i class="fas fa-arrow-left tool-cancel" (click)="onBackBtn()"></i>
                         <i class="fas fa-check tool-done" (click)="onSubmitBtn()"></i>  
-                        <i class="fas fa-times tool-cancel"></i>
                     </div>
                 </div>
             </div>

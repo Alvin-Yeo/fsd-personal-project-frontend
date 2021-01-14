@@ -12,3 +12,15 @@
 .div-note {
     cursor: pointer;
 }
+
+.photo-grid-div {
+    max-height: 130px;
+    overflow: hidden;
+}
+
+.photo-grid {
+    max-width: 125px;
+    height: auto;
+    border-radius: 0.25rem;
+    margin-bottom: 5px;
+}
