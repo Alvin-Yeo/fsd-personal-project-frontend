@@ -58,10 +58,11 @@ export class AuthService implements CanActivate {
 
     signOut() {
         if(this.socialUser) {
-            this.googleAuthServ.signOut();
+            this.googleAuthServ.signOut().then(() => {
+                console.info('Signed out with Google successfully.');
+            });
             this.socialUser = null;
             this.token = '';
-            console.info('Signed out with Google successfully.');
         } else {
             this.user = '';
             this.token = '';
