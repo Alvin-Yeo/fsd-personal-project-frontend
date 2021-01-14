@@ -44,6 +44,7 @@ export class MainComponent implements OnInit {
 
   filterList(type, order) {
     if(type === 'notes') {
+      this.noteMode = true;
       this.noteSrvc.getNoteList(this.user, order)
         .then(result => this.notes = result)
         .catch(error => console.error(error));

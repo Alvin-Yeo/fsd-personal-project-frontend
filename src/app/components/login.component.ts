@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SocialAuthService, SocialUser, GoogleLoginProvider } from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +17,16 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authSrvc: AuthService,
-    private router: Router
+    private router: Router,
+    private googleAuthServ: SocialAuthService
   ) { }
 
   ngOnInit(): void {
     this.loginForm = this.createLoginForm();
+
+    this.googleAuthServ.authState.subscribe(user => {
+      this.authSrvc.socialUser = user;
+    });
   }
 
   createLoginForm(): FormGroup {
@@ -43,5 +49,12 @@ export class LoginComponent implements OnInit {
       this.loginForm.get('password').reset();
       this.hasError = true;
     }
+  }
+
+  signInWithGoogle() {
+    this.googleAuthServ.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(() => {
+        this.authSrvc.signInWithGoogle();
+      });
   }
 }

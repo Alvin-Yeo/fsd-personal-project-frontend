@@ -16,6 +16,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 
 const ROUTES: Routes = [
   { path: '', component: LoginComponent },
@@ -34,7 +35,7 @@ const ROUTES: Routes = [
     MainComponent,
     ItemComponent,
     RegisterComponent,
-    RegisterSuccessfulComponent
+    RegisterSuccessfulComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,9 +46,24 @@ const ROUTES: Routes = [
     NoopAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    SocialLoginModule
   ],
-  providers: [AuthService, NotesService, MatDatepickerModule],
+  providers: [
+    AuthService, 
+    NotesService, 
+    MatDatepickerModule,
+    { 
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [{
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider('122499813988-8amgfr6poonplcerk47l7itq67ic0frn.apps.googleusercontent.com')
+        }]
+      } as SocialAuthServiceConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

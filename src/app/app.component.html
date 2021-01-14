@@ -10,7 +10,15 @@
                 <a class="nav-link active" [routerLink]="['/register']">Sign Up</a>
             </div>
             <div class="d-flex" *ngIf="hasLoggedIn">
-                <img id="avatar" [src]="imgPath" alt="avatar">
+                <div class="dropdown">
+                    <img [src]="imgPath" alt="avatar" id="userBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userBtn">
+                        <li><a class="dropdown-item disabled">{{user}}</a></li>
+                        <li><a class="dropdown-item disabled">Edit Profile</a></li>
+                        <li><a class="dropdown-item disabled">Settings</a></li>
+                        <li><a class="dropdown-item" (click)="onSignOut()">Sign Out</a></li>
+                    </ul>
+                </div>
             </div>
         </div> 
     </nav> 

@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
+import { SocialAuthService, SocialUser } from "angularx-social-login";
 import { Subject } from "rxjs";
 
 @Injectable()
@@ -8,11 +9,14 @@ export class AuthService implements CanActivate {
     private token = '';
     private user = '';
 
+    socialUser: SocialUser;
+
     event = new Subject<string>();
     
     constructor(
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private googleAuthServ: SocialAuthService
     ) {}
 
     getToken(): string {
@@ -28,7 +32,7 @@ export class AuthService implements CanActivate {
             .then(result => {
                 this.user = username;
                 this.token = result.body['token'];
-                console.info(`[INFO] Token: `, this.token);
+                // console.info(`[INFO] Token: `, this.token);
                 this.event.next(this.token);
                 return result.status;
             })
@@ -52,4 +56,27 @@ export class AuthService implements CanActivate {
         return this.router.parseUrl('/');
     }
 
+    signOut() {
+        if(this.socialUser) {
+            this.googleAuthServ.signOut();
+            this.socialUser = null;
+            this.token = '';
+            console.info('Signed out with Google successfully.');
+        } else {
+            this.user = '';
+            this.token = '';
+            console.info(`[INFO] Logged out.`);
+        }
+
+        this.router.navigateByUrl('/', { skipLocationChange: true})
+            .then(() => this.router.navigate(['/']));
+    }
+
+    signInWithGoogle() {
+        this.user = this.socialUser.email;
+        this.token = this.socialUser.id;
+        this.event.next(this.token);
+        console.info('Signed in with Google successfully.');
+        this.router.navigate(['/main']);
+    }
 }

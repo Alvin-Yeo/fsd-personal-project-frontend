@@ -14,10 +14,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   hasLoggedIn = false;
   imgPath = 'assets/img/user-placeholder.png';
+  user = '';
   
   constructor(
     private authSvrc: AuthService,
-    private noteSvrc: NotesService
+    private noteSvrc: NotesService,
   ) {}
 
   ngOnInit(): void {
@@ -28,16 +29,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // subsribe to incoming message
     this.event$ = this.authSvrc.event.subscribe((token) => {
-      if(token)
+      if(token) {
+        this.user = this.authSvrc.getUser();
         this.hasLoggedIn = true;
-      else
+      }
+      else {
+        this.user = '';
         this.hasLoggedIn = false;
+      }
     });
   }
 
   ngOnDestroy() {
     this.event$.unsubscribe();
     console.info(`[INFO] App destroyed.`);
+  }
+
+  onSignOut() {
+    this.hasLoggedIn = false;
+    this.authSvrc.signOut();
   }
 
 }
